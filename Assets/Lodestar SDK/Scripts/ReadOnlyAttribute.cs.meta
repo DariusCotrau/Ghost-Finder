@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 84ccdfac76d2e7c479230b41f2df8010
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 324672
+  packageName: Lodestar SDK
+  packageVersion: 0.1.1
+  assetPath: Assets/Lodestar SDK/Scripts/ReadOnlyAttribute.cs
+  uploadId: 767925

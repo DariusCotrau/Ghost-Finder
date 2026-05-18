@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 9da44bc7610d27b499514adc2283216f
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 324672
+  packageName: Lodestar SDK
+  packageVersion: 0.1.1
+  assetPath: Assets/Lodestar SDK/Prefabs/Lodestar Manager.prefab
+  uploadId: 767925

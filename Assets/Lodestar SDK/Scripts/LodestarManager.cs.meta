@@ -1,0 +1,21 @@
+fileFormatVersion: 2
+guid: 5f175467debfd6341915a99058651f71
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - trackerObject: {fileID: 3458283109532121944, guid: 4b59043ca9259b449b4129e84e5bba76,
+      type: 3}
+  - trackerParent: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 324672
+  packageName: Lodestar SDK
+  packageVersion: 0.1.1
+  assetPath: Assets/Lodestar SDK/Scripts/LodestarManager.cs
+  uploadId: 767925

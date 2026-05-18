@@ -1,0 +1,19 @@
+fileFormatVersion: 2
+guid: 6ce4bc555e72f9f458e4f3d7d0387bd0
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - lodestarJson: {fileID: 4900000, guid: e62a83f85f1ed8c4abd6d7e252def732, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 324672
+  packageName: Lodestar SDK
+  packageVersion: 0.1.1
+  assetPath: Assets/Lodestar SDK/Input/Layouts/LodestarTrackerLayout.cs
+  uploadId: 767925
