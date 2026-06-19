@@ -1,42 +1,104 @@
 using UnityEngine;
+using UnityEngine.UI; // IMPORTANT: Adauga aceasta linie pentru a putea controla UI-ul!
 
 public class UVFlashlight : MonoBehaviour
 {
     [Header("Setari Lumina")]
-    public GameObject uvLightObject; // Trage componenta de Spotlight aici
-    public float lightRange = 10f;   // Distanta maxima a lanternei
-    public LayerMask ghostLayer;     // Layer-ul pe care se afla fantoma
+    public GameObject uvLightObject; 
+    public float lightRange = 10f;   
+    public LayerMask ghostLayer;     
 
-    private bool isEquipped = true;  // Seteaza pe false daca ai sistem de inventar
+    [Header("Setari Baterie (Nerf)")]
+    public float maxBatteryDuration = 5f;  
+    public float rechargeDuration = 25f;  
+    
+    [Header("Setari UI")]
+    public Slider batterySlider; // Trage Slider-ul din scena aici
+
+    private float currentBattery;
+    private bool isRecharging = false;
+    private bool isEquipped = true;  
     private bool isOn = false;
 
     void Start()
     {
-        // Ne asiguram ca la inceputul jocului lanterna este stinsa in cod
+        currentBattery = maxBatteryDuration;
+
+        // Configuram slider-ul sa aiba valorile corecte automat
+        if (batterySlider != null)
+        {
+            batterySlider.maxValue = maxBatteryDuration;
+            batterySlider.value = currentBattery;
+        }
+
         isOn = false;
-        
-        // Dezactivam obiectul de lumina (Spotlight-ul mov)
         if (uvLightObject != null)
         {
             uvLightObject.SetActive(false);
         }
     }
-    void Update()
+
+void Update()
     {
-        // Verifica daca lanterna este echipata
         if (!isEquipped) return;
 
-        // Click stanga (Fire1) pentru pornire/oprire
-        if (Input.GetButtonDown("Fire1"))
+        if (Input.GetButtonDown("Fire1") && !isRecharging)
         {
             ToggleFlashlight();
         }
 
-        // Daca lanterna e pornita, cautam fantoma
         if (isOn)
         {
-            DetectGhost();
+            currentBattery -= Time.deltaTime;
+
+            if (currentBattery <= 0)
+            {
+                currentBattery = 0;
+                ForceTurnOff(); 
+            }
+            else
+            {
+                DetectGhost();
+            }
         }
+        else
+        {
+            if (currentBattery < maxBatteryDuration)
+            {
+                float rechargeRate = maxBatteryDuration / rechargeDuration;
+                currentBattery += Time.deltaTime * rechargeRate;
+
+                if (currentBattery >= maxBatteryDuration)
+                {
+                    currentBattery = maxBatteryDuration;
+                    
+                    // DOAR DACA era in starea de incarcare, trimitem mesajul de Full
+                    if (isRecharging)
+                    {
+                        Debug.Log("[SISTEM] Baterie lanterna UV: 100%. Gata de utilizare.");
+                    }
+                    
+                    isRecharging = false; 
+                }
+            }
+        }
+
+        if (batterySlider != null)
+        {
+            batterySlider.value = currentBattery;
+        }
+    }
+
+    void ForceTurnOff()
+    {
+        isOn = false;
+        isRecharging = true; 
+        if (uvLightObject != null)
+        {
+            uvLightObject.SetActive(false);
+        }
+        // Schimbat textul sa sune mai tehnic/realist pentru un dispozitiv de ghost hunting
+        Debug.LogWarning("[AVERTIZARE] Baterie descarcata! Sistemul UV intra in mod de reincarcare (10s)...");
     }
 
     void ToggleFlashlight()
@@ -50,15 +112,12 @@ public class UVFlashlight : MonoBehaviour
 
     void DetectGhost()
     {
-        // Trimitem o raza din centrul ecranului (sau din pozitia lanternei) in fata
         Ray ray = new Ray(Camera.main.transform.position, Camera.main.transform.forward);
         RaycastHit hit;
-        // Va desena o linie rosie in Scene View care iti arata exact unde "bate" raza ta invizibila
         Debug.DrawRay(Camera.main.transform.position, Camera.main.transform.forward * lightRange, Color.red);
-        // Tragem raza doar pe layer-ul fantomei pentru performanta si acuratete
+        
         if (Physics.Raycast(ray, out hit, lightRange, ghostLayer))
         {
-            // Verificam daca am lovit componenta fantomei
             GhostController ghost = hit.collider.GetComponent<GhostController>();
             if (ghost != null)
             {
@@ -67,11 +126,11 @@ public class UVFlashlight : MonoBehaviour
         }
     }
 
-    // Functii apelate de sistemul tau de inventar cand schimbi armele/uneltele
     public void Equip() 
     { 
         isEquipped = true; 
         gameObject.SetActive(true);
+        if (batterySlider != null) batterySlider.gameObject.SetActive(true);
     }
     
     public void Unequip() 
@@ -79,6 +138,7 @@ public class UVFlashlight : MonoBehaviour
         isEquipped = false; 
         isOn = false;
         if (uvLightObject != null) uvLightObject.SetActive(false);
+        if (batterySlider != null) batterySlider.gameObject.SetActive(false);
         gameObject.SetActive(false);
     }
 }
