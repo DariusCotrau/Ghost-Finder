@@ -27,7 +27,7 @@ Jocul pune la dispoziție o serie de unelte unice pentru investigație. Fiecare 
 * **Funcționalitate:** Oferă o lumină ambientală constantă pentru a naviga prin casă. Nu consumă baterie și este atașată permanent de jucător.
 
 ### 🟣 Lanterna UV (UV Flashlight)
-* **Tastă activare:** **Click Stânga (`Fire1`)** (atunci când este echipată)
+* **Tastă activare:** **Click Stânga** (atunci când este echipată)
 * **Funcționalitate:** Proiectează o rază de lumină ultravioletă capabilă să **dezvăluie fantoma invizibilă**. 
 * **⚠️ Mecanică de Nerf (Managementul Bateriei):** Lanterna UV poate fi folosită continuu timp de maximum **5 secunde**. Dacă se descarcă complet, sistemul intră în cooldown și are nevoie de **10 secunde** pentru o reîncărcare completă la 100%. Un slider pe UI îți arată în timp real nivelul bateriei.
 
