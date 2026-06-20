@@ -1,20 +1,38 @@
+using Unity.Netcode;
 using UnityEngine;
 
-public class MouseLook : MonoBehaviour
+public class MouseLook : NetworkBehaviour
 {
     public float mouseSensitivity = 100f;
     public Transform playerBody;
 
+    [Header("Local Player")]
+    [Tooltip("Camera jucatorului (copil al prefab-ului). Activata doar pentru owner.")]
+    public Camera playerCamera;
+    public AudioListener audioListener;
+
     private float xRotation = 0f;
 
-    void Start()
+    public override void OnNetworkSpawn()
     {
-        // Blochează cursorul în centrul ecranului și îl ascunde
-        Cursor.lockState = CursorLockMode.Locked;
+        // Activam camera + audio + control mouse DOAR pentru jucatorul local.
+        // Pe ceilalti jucatori camera lor trebuie sa fie inactiva la noi.
+        bool local = IsOwner;
+
+        if (playerCamera != null) playerCamera.enabled = local;
+        if (audioListener != null) audioListener.enabled = local;
+
+        // Daca nu e owner, oprim acest script ca sa nu miste camera altcuiva.
+        enabled = local;
+
+        if (local)
+            Cursor.lockState = CursorLockMode.Locked;
     }
 
     void Update()
     {
+        if (!IsOwner) return;
+
         // Preluăm mișcarea mouse-ului
         float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
         float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity * Time.deltaTime;

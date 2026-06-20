@@ -1,48 +1,60 @@
+using Unity.Netcode;
 using UnityEngine;
-using TMPro; // Necesar pentru TextMeshPro
 
-public class PlayerInteraction : MonoBehaviour
+public class PlayerInteraction : NetworkBehaviour
 {
     public float interactDistance = 3f;
     public GameObject interactText; // Trage obiectul "Text (TMP)" aici în Inspector
 
+    [Header("Camera owner-ului (pt raycast)")]
+    public Camera aimCamera;
+
     void Start()
     {
-        // Ne asigurăm că textul este ascuns la începutul jocului
         if (interactText != null)
             interactText.SetActive(false);
     }
 
+    public override void OnNetworkSpawn()
+    {
+        // Doar jucatorul local face raycast de interactiune si vede textul "E".
+        if (!IsOwner)
+        {
+            enabled = false;
+            if (interactText != null) interactText.SetActive(false);
+            return;
+        }
+
+        if (aimCamera == null)
+            aimCamera = GetComponentInChildren<Camera>(true);
+    }
+
     void Update()
     {
-        Ray ray = new Ray(transform.position, transform.forward);
-        RaycastHit hit;
+        if (!IsOwner) return;
 
-        // Verificăm dacă raza lovește ceva
-        if (Physics.Raycast(ray, out hit, interactDistance))
+        Transform origin = aimCamera != null ? aimCamera.transform : transform;
+        Ray ray = new Ray(origin.position, origin.forward);
+
+        if (Physics.Raycast(ray, out RaycastHit hit, interactDistance))
         {
-            // Căutăm scriptul de ușă pe obiectul lovit sau pe părinții lui
             DoorController door = hit.collider.GetComponentInParent<DoorController>();
 
             if (door != null)
             {
-                // Dacă vedem o ușă, afișăm textul "E"
                 if (interactText != null) interactText.SetActive(true);
 
+                // Usa e networked: cerem toggle pe server, sincronizat la toti.
                 if (Input.GetKeyDown(KeyCode.E))
-                {
-                    door.ToggleDoor();
-                }
+                    door.ToggleDoorServerRpc();
             }
             else
             {
-                // Dacă lovim altceva care nu e ușă, ascundem textul
                 if (interactText != null) interactText.SetActive(false);
             }
         }
         else
         {
-            // Dacă nu lovim nimic, ascundem textul
             if (interactText != null) interactText.SetActive(false);
         }
     }
