@@ -25,6 +25,8 @@ public class GameHUD : MonoBehaviour
     private Text timerText;
     private Text roleText;
 
+    private Text debugText; // TEMP diagnostic
+
     private GameObject pausePanel;
     private Button pauseLobbyBtn;
 
@@ -73,6 +75,15 @@ public class GameHUD : MonoBehaviour
         bool started = gm != null && gm.MatchStarted.Value;
         bool ended = gm != null && gm.MatchEnded.Value;
         bool playing = connected && started && !ended;
+
+        // TEMP diagnostic - mereu vizibil.
+        int n = 0; bool localFound = false; PlayerRole lr = PlayerRole.None; bool localOwner = false;
+        foreach (var lp in GameManager.AllPlayers())
+        {
+            n++;
+            if (lp.IsOwner) { localFound = true; lr = lp.Role.Value; localOwner = true; }
+        }
+        debugText.text = $"conn:{connected} GM:{gm != null} started:{started} ended:{ended} players:{n} localOwner:{localOwner} role:{lr}";
 
         // Pauza (doar in meci).
         if (playing && Input.GetKeyDown(KeyCode.Escape))
@@ -142,6 +153,17 @@ public class GameHUD : MonoBehaviour
         BuildHud(canvasGO.transform);
         BuildPausePanel(canvasGO.transform);
         BuildEndPanel(canvasGO.transform);
+
+        // TEMP debug overlay sus-stanga.
+        var dbg = new GameObject("Debug", typeof(RectTransform));
+        dbg.transform.SetParent(canvasGO.transform, false);
+        var drt = dbg.GetComponent<RectTransform>();
+        drt.anchorMin = new Vector2(0, 1); drt.anchorMax = new Vector2(0, 1);
+        drt.pivot = new Vector2(0, 1);
+        drt.anchoredPosition = new Vector2(12, -12);
+        drt.sizeDelta = new Vector2(1200, 30);
+        debugText = Label(dbg.transform, "", 16, FontStyle.Bold, new Color(1f, 1f, 0.4f), Vector2.zero, new Vector2(1200, 30));
+        debugText.alignment = TextAnchor.UpperLeft;
     }
 
     private void BuildHud(Transform parent)
