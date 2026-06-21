@@ -1,33 +1,47 @@
+using Unity.Netcode;
 using UnityEngine;
 
-public class DoorController : MonoBehaviour
+/// <summary>
+/// Usa networked. Starea (deschis/inchis) e NetworkVariable autoritate-server,
+/// deci toti jucatorii vad aceeasi animatie. Orice client poate cere toggle
+/// (RequireOwnership=false) cand interactioneaza.
+///
+/// Necesita NetworkObject pe acest GameObject (usa plasata in scena).
+/// </summary>
+public class DoorController : NetworkBehaviour
 {
-    public bool isOpen = false;
     public float openRotation = 90f; // Unghiul de deschidere
     public float smooth = 2f;        // Viteza animației
+
+    // Stare sincronizata. Scrisa doar de server.
+    public NetworkVariable<bool> IsOpen = new NetworkVariable<bool>(
+        false,
+        NetworkVariableReadPermission.Everyone,
+        NetworkVariableWritePermission.Server);
 
     private Quaternion closedRot;
     private Quaternion openRot;
 
-    void Start()
+    void Awake()
     {
-        // Memorăm rotația inițială (închisă)
+        // Memoram rotatia initiala (inchisa) inainte de orice animatie.
         closedRot = transform.localRotation;
-        // Calculăm rotația pentru deschis
         openRot = Quaternion.Euler(0, openRotation, 0) * closedRot;
     }
 
     void Update()
     {
-        // Animăm rotația ușii către starea dorită
-        if (isOpen)
-            transform.localRotation = Quaternion.Slerp(transform.localRotation, openRot, Time.deltaTime * smooth);
-        else
-            transform.localRotation = Quaternion.Slerp(transform.localRotation, closedRot, Time.deltaTime * smooth);
+        // Toti clientii animeaza catre starea sincronizata.
+        Quaternion target = IsOpen.Value ? openRot : closedRot;
+        transform.localRotation = Quaternion.Slerp(transform.localRotation, target, Time.deltaTime * smooth);
     }
 
-    public void ToggleDoor()
+    /// <summary>
+    /// Apelat de client (PlayerInteraction) la apasarea E.
+    /// </summary>
+    [Rpc(SendTo.Server, RequireOwnership = false)]
+    public void ToggleDoorServerRpc()
     {
-        isOpen = !isOpen;
+        IsOpen.Value = !IsOpen.Value;
     }
 }

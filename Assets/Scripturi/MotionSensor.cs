@@ -1,16 +1,24 @@
+using Unity.Netcode;
 using UnityEngine;
 
-public class MotionSensor : MonoBehaviour
+/// <summary>
+/// Senzor de miscare networked. Detectia (Trigger) ruleaza autoritar pe server;
+/// beep-ul e trimis la toti clientii prin ClientRpc, ca toata lumea sa-l auda.
+/// Detecteaza orice jucator (Hunter sau Ghost) care intra in raza.
+///
+/// Necesita NetworkObject pe acest GameObject (senzor plasat in scena sau spawnat).
+/// </summary>
+public class MotionSensor : NetworkBehaviour
 {
     private AudioSource audioSource;
-    
+
     [Header("Setari Sunet")]
-    public float beepInterval = 1f; // O data la cate secunde sa bipaie cand e cineva aproape
+    public float beepInterval = 1f;
     private float beepTimer;
 
-    private bool isObjectInside = false;
+    private int occupants = 0; // cati jucatori sunt in raza (doar pe server)
 
-    void Start()
+    void Awake()
     {
         audioSource = GetComponent<AudioSource>();
         beepTimer = beepInterval;
@@ -18,46 +26,44 @@ public class MotionSensor : MonoBehaviour
 
     void Update()
     {
-        // Daca este cineva in raza, senzorul va bipaia ritmic
-        if (isObjectInside)
+        // Doar serverul decide ritmul beep-ului (sursa de adevar).
+        if (!IsServer) return;
+
+        if (occupants > 0)
         {
             beepTimer -= Time.deltaTime;
             if (beepTimer <= 0f)
             {
-                PlayBeep();
-                beepTimer = beepInterval; // Reseteaza timerul
+                BeepClientRpc();
+                beepTimer = beepInterval;
             }
         }
     }
 
-    // Ruleaza automat cand un corp intra in sfera invizibila (Trigger)
     private void OnTriggerEnter(Collider other)
     {
-        // MOMENTAN: Verificam daca cel care a intrat este Jucatorul (poti folosi Tag-ul "Player")
-        // Mai incolo, cand fantoma va merge, poti schimba sa verifice tag-ul "Ghost" sau layer-ul
-        if (other.CompareTag("Player")) 
-        {
-            isObjectInside = true;
-            beepTimer = 0f; // Bipaie instant cand ai calcat in raza lui
-            Debug.Log("[SENZOR] Miscare detectata in zona!");
-        }
+        if (!IsServer) return;
+        if (!other.CompareTag("Player")) return;
+
+        occupants++;
+        if (occupants == 1) beepTimer = 0f; // beep instant la prima intrare
+        Debug.Log("[SENZOR] Miscare detectata in zona!");
     }
 
-    // Ruleaza automat cand corpul paraseste sfera invizibila
     private void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("Player"))
-        {
-            isObjectInside = false;
+        if (!IsServer) return;
+        if (!other.CompareTag("Player")) return;
+
+        occupants = Mathf.Max(0, occupants - 1);
+        if (occupants == 0)
             Debug.Log("[SENZOR] Zona este din nou sigura.");
-        }
     }
 
-    void PlayBeep()
+    [Rpc(SendTo.Everyone)]
+    void BeepClientRpc()
     {
         if (audioSource != null && audioSource.clip != null)
-        {
             audioSource.Play();
-        }
     }
 }
