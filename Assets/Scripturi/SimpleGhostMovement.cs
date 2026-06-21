@@ -10,13 +10,12 @@ public class SimpleGhostMovement : MonoBehaviour
     private Rigidbody rb;
     private Vector3 movementDirection;
     private float timer;
+    private bool isExorcised = false;
 
     void Start()
     {
         rb = GetComponent<Rigidbody>();
 
-        // IMPORTANT: Dezactivăm isKinematic ca fizica să o oprească la pereți,
-        // dar îi înghețăm rotațiile ca să nu se răstoarne când se lovește de ceva.
         rb.isKinematic = false;
         rb.useGravity = true; // O lăsăm cu gravitație ca să stea pe podea
         rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
@@ -26,9 +25,13 @@ public class SimpleGhostMovement : MonoBehaviour
 
     void FixedUpdate()
     {
-        // Mutăm fantoma prin fizică (Rigidbody) - așa NU mai trece prin pereți!
+        if (isExorcised)
+            {
+                rb.linearVelocity = Vector3.zero;
+                return;
+            }
         Vector3 velocity = movementDirection * speed;
-        velocity.y = rb.linearVelocity.y; // Păstrăm gravitația pe axa Y ca să nu zboare
+        velocity.y = rb.linearVelocity.y; 
         rb.linearVelocity = velocity;
     }
 
@@ -67,5 +70,13 @@ public class SimpleGhostMovement : MonoBehaviour
         {
             ChooseRandomDirection();
         }
+    }
+    public void Exorcise()
+    {
+        isExorcised = true;
+
+        rb.linearVelocity = Vector3.zero;
+
+        Debug.Log("[GHOST] Fantoma a fost exorcizata!");
     }
 }

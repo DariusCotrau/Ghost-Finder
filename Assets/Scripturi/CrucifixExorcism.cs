@@ -1,5 +1,5 @@
 using UnityEngine;
-
+using UnityEngine.SceneManagement;
 public class CrucifixExorcism : MonoBehaviour
 {
     [Header("Setari Exorcizare")]
@@ -10,6 +10,14 @@ public class CrucifixExorcism : MonoBehaviour
     [Header("UI / Debug")]
     // Daca ai un text simplu sau vrei doar sa vezi in consola cum creste timpul
     private bool isExorcising = false;
+    [Header("UI Victorie")]
+    public GameObject victoryPanel;
+
+    void Start()
+    {
+        if (victoryPanel != null)
+            victoryPanel.SetActive(false);
+    }
 
     void OnEnable()
     {
@@ -51,23 +59,38 @@ public class CrucifixExorcism : MonoBehaviour
         
         if (currentExorcismTime > 0)
         {
-            currentExorcismTime -= Time.deltaTime * 0.5f; // Scade mai lent decat creste
+            currentExorcismTime -= Time.deltaTime * 0.1f; // Scade mai lent decat creste
         }
     }
 
     void WinGame()
     {
-        Debug.Log("[VICTORIE] Fantoma a fost trimisa inapoi in iad! Ati castigat jocul!");
-        
-        // AICI: Opresti jocul sau distrugi fantoma
-        // De exemplu, gasim fantoma si o stergem din scena:
-        GameObject ghost = GameObject.FindWithTag("Ghost");
+        Debug.Log("[VICTORIE] Fantoma a fost exorcizata!");
+
+        GameObject ghost =
+            GameObject.FindWithTag("Ghost");
+
         if (ghost != null)
         {
-            Destroy(ghost);
+            SimpleGhostMovement movement =
+                ghost.GetComponent<SimpleGhostMovement>();
+
+            if (movement != null)
+            {
+                movement.Exorcise();
+            }
         }
 
-        // TODO opcional pentru maine: Poti activa un ecran simplu de "YOU WIN" daca aveti deja unul facut de colegi
-        // Ex: SceneManager.LoadScene("WinScene");
+        if (victoryPanel != null)
+        {
+            victoryPanel.SetActive(true);
+
+            Cursor.lockState =
+                CursorLockMode.None;
+
+            Cursor.visible = true;
+
+            Time.timeScale = 0f;
+        }
     }
 }
