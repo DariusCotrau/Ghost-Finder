@@ -26,20 +26,32 @@ public class MouseLook : NetworkBehaviour
         if (audioListener != null) audioListener.enabled = owner;
 
         if (owner)
-        {
             mouseSensitivity = PlayerPrefs.GetFloat("gf_sensitivity", 2f) * 50f;
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
-        }
         else
-        {
             enabled = false; // nu rula Update pe non-owner
-        }
     }
 
     private void Update()
     {
         if (!IsOwner) return;
+
+        // In lobby / dupa meci: cursor liber, fara rotire (ca sa poti da click pe UI).
+        var gm = GameManager.Instance;
+        bool playing = gm != null && gm.MatchStarted.Value && !gm.MatchEnded.Value;
+        if (!playing)
+        {
+            if (Cursor.lockState != CursorLockMode.None)
+            {
+                Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true;
+            }
+            return;
+        }
+        if (Cursor.lockState != CursorLockMode.Locked)
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+        }
 
         float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
         float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity * Time.deltaTime;

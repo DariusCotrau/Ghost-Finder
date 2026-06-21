@@ -18,7 +18,8 @@ public class GameManager : NetworkBehaviour
 {
     public static GameManager Instance { get; private set; }
 
-    public const int MinPlayers = 2;
+    // TEMP: 1 pentru testare solo. Revino la 2 pentru joc real.
+    public const int MinPlayers = 1;
 
     [Header("Scene")]
     public string gameplaySceneName = "SampleScene";
@@ -132,6 +133,14 @@ public class GameManager : NetworkBehaviour
     private void AssignRoles()
     {
         var players = new List<LobbyPlayer>(AllPlayers());
+
+        // TEMP solo: un singur jucator -> Hunter (ca sa aiba kit + camera de testat).
+        if (players.Count == 1)
+        {
+            players[0].Role.Value = PlayerRole.Hunter;
+            return;
+        }
+
         for (int i = players.Count - 1; i > 0; i--)
         {
             int j = Random.Range(0, i + 1);

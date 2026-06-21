@@ -64,6 +64,8 @@ public class NetworkBootstrap : MonoBehaviour
 
     private void OnServerStarted()
     {
+        // Daca transportul a esuat (port ocupat), serverul nu asculta -> nu spawna.
+        if (!nm.IsListening) return;
         if (gameManagerPrefab == null) return;
         if (GameManager.Instance != null) return; // persista intre scene
         var go = Instantiate(gameManagerPrefab);
