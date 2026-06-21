@@ -1,74 +1,58 @@
+using Unity.Netcode;
 using UnityEngine;
-using TMPro;
 
-public class PlayerInteraction : MonoBehaviour
+/// <summary>
+/// Interactiune jucator (E), owner-only. Raycast din camera; deschide usi prin
+/// ToggleDoorServerRpc. Ridicarea itemelor ramane deocamdata locala (inventarul
+/// va fi networked in Faza 4c).
+/// </summary>
+public class PlayerInteraction : NetworkBehaviour
 {
-public float interactDistance = 3f;
-public GameObject interactText;
+    public float interactDistance = 3f;
+    public GameObject interactText;
+    public Transform aimCamera;
 
-private PlayerInventory inventory;
+    private PlayerInventory inventory;
 
-void Start()
-{
-    inventory = GetComponent<PlayerInventory>();
-
-    if (interactText != null)
-        interactText.SetActive(false);
-}
-
-void Update()
-{
-    Ray ray = new Ray(transform.position, transform.forward);
-    RaycastHit hit;
-
-    if (Physics.Raycast(ray, out hit, interactDistance))
+    public override void OnNetworkSpawn()
     {
-        // Verificam mai intai daca este un pickup
-        ItemPickup pickup =
-            hit.collider.GetComponentInParent<ItemPickup>();
-
-        if (pickup != null)
+        inventory = GetComponent<PlayerInventory>();
+        if (!IsOwner)
         {
-            if (interactText != null)
-                interactText.SetActive(true);
-
-            if (Input.GetKeyDown(KeyCode.E))
-            {
-                if (inventory != null &&
-                    inventory.AddItem(pickup.itemType))
-                {
-                    Destroy(pickup.gameObject);
-                }
-            }
-
+            enabled = false;
             return;
         }
+        if (interactText != null) interactText.SetActive(false);
+    }
 
-        // Verificam apoi daca este o usa
-        DoorController door =
-            hit.collider.GetComponentInParent<DoorController>();
+    private void Update()
+    {
+        if (!IsOwner) return;
 
-        if (door != null)
+        Vector3 origin = aimCamera != null ? aimCamera.position : transform.position;
+        Vector3 dir = aimCamera != null ? aimCamera.forward : transform.forward;
+
+        if (Physics.Raycast(origin, dir, out RaycastHit hit, interactDistance))
         {
-            if (interactText != null)
-                interactText.SetActive(true);
-
-            if (Input.GetKeyDown(KeyCode.E))
+            var pickup = hit.collider.GetComponentInParent<ItemPickup>();
+            if (pickup != null)
             {
-                door.ToggleDoor();
+                if (interactText != null) interactText.SetActive(true);
+                if (Input.GetKeyDown(KeyCode.E) && inventory != null && inventory.AddItem(pickup.itemType))
+                    Destroy(pickup.gameObject);
+                return;
+            }
+
+            var door = hit.collider.GetComponentInParent<DoorController>();
+            if (door != null)
+            {
+                if (interactText != null) interactText.SetActive(true);
+                if (Input.GetKeyDown(KeyCode.E))
+                    door.ToggleDoorServerRpc();
+                return;
             }
         }
-        else
-        {
-            if (interactText != null)
-                interactText.SetActive(false);
-        }
-    }
-    else
-    {
-        if (interactText != null)
-            interactText.SetActive(false);
-    }
-}
 
+        if (interactText != null) interactText.SetActive(false);
+    }
 }

@@ -1,41 +1,36 @@
+using Unity.Netcode;
 using UnityEngine;
 
-public class LanternController : MonoBehaviour
+/// <summary>
+/// Felinar/far de mana. Owner comuta cu F; starea se sincronizeaza prin
+/// NetworkVariable (owner-write) ca toti sa vada lumina aprinsa/stinsa.
+/// </summary>
+public class LanternController : NetworkBehaviour
 {
-    public Light lanternLight; // Referință către componenta de lumină
-    public bool isOn = true;   // Starea inițială
+    public Light lanternLight;
+    public bool startOn = true;
 
-    void Start()
+    private readonly NetworkVariable<bool> IsOn =
+        new NetworkVariable<bool>(true,
+            NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+
+    public override void OnNetworkSpawn()
     {
-        // Ne asigurăm că avem componenta, dacă nu e setată în Inspector
-        if (lanternLight == null)
-        {
-            lanternLight = GetComponent<Light>();
-        }
-
-        // Setăm starea inițială
-        if (lanternLight != null)
-        {
-            lanternLight.enabled = isOn;
-        }
+        if (lanternLight == null) lanternLight = GetComponent<Light>();
+        if (IsOwner) IsOn.Value = startOn;
+        IsOn.OnValueChanged += (_, on) => Apply(on);
+        Apply(IsOn.Value);
     }
 
-    void Update()
+    private void Apply(bool on)
     {
-        // Detectăm apăsarea tastei F
+        if (lanternLight != null) lanternLight.enabled = on;
+    }
+
+    private void Update()
+    {
+        if (!IsOwner) return;
         if (Input.GetKeyDown(KeyCode.F))
-        {
-            ToggleLantern();
-        }
-    }
-
-    void ToggleLantern()
-    {
-        isOn = !isOn; // Schimbăm starea
-
-        if (lanternLight != null)
-        {
-            lanternLight.enabled = isOn; // Activăm/Dezactivăm lumina
-        }
+            IsOn.Value = !IsOn.Value;
     }
 }

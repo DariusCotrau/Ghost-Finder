@@ -26,6 +26,11 @@ public class LobbyPlayer : NetworkBehaviour
         new NetworkVariable<PlayerRole>(
             PlayerRole.None, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
 
+    // Hunter doborat de o fantoma (GhostAttacker). Server-write.
+    public readonly NetworkVariable<bool> Eliminated =
+        new NetworkVariable<bool>(
+            false, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
+
     public override void OnNetworkSpawn()
     {
         // Persista peste schimbarea de scena (lobby -> joc).

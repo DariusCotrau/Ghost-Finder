@@ -1,65 +1,107 @@
+using Unity.Netcode;
+using Unity.Netcode.Components;
 using UnityEngine;
 
-public class MovementScript : MonoBehaviour
+/// <summary>
+/// Miscare jucator, owner-authoritative. Doar owner-ul citeste input + muta
+/// Rigidbody; NetworkTransform (owner authority) sincronizeaza pozitia la
+/// ceilalti. Controlul e blocat in lobby (meci nepornit), cand jucatorul e
+/// prins (ghost) sau eliminat (hunter).
+/// </summary>
+[RequireComponent(typeof(Rigidbody))]
+public class MovementScript : NetworkBehaviour
 {
     public float viteza = 5f;
-    public float fortaSaritura = 5f; // Puterea săriturii
-    
+    public float fortaSaritura = 5f;
+
     private Rigidbody rb;
+    private LobbyPlayer lobbyPlayer;
+    private PlayerGhostVisibility ghostVis;
     private Vector2 movement;
     private bool vreaSaSara = false;
     private bool estePePamant = true;
 
-    void Start()
+    private void Awake()
     {
         rb = GetComponent<Rigidbody>();
-        rb.freezeRotation = true; // Împiedică jucătorul să se rotească aiurea la coliziuni
+        rb.freezeRotation = true;
+        lobbyPlayer = GetComponent<LobbyPlayer>();
+        ghostVis = GetComponent<PlayerGhostVisibility>();
     }
 
-    void Update()
+    public override void OnNetworkSpawn()
     {
-        // Input mișcare
+        // Non-owner nu simuleaza fizica local (NetworkTransform conduce pozitia).
+        if (!IsOwner)
+            rb.isKinematic = true;
+    }
+
+    /// <summary>Controlul e blocat? (lobby, prins, eliminat).</summary>
+    private bool ControlBlocat()
+    {
+        var gm = GameManager.Instance;
+        if (gm != null && !gm.MatchStarted.Value) return true;
+        if (gm != null && gm.MatchEnded.Value) return true;
+        if (ghostVis != null && ghostVis.Caught.Value) return true;
+        if (lobbyPlayer != null && lobbyPlayer.Eliminated.Value) return true;
+        return false;
+    }
+
+    private void Update()
+    {
+        if (!IsOwner) return;
+
+        if (ControlBlocat())
+        {
+            movement = Vector2.zero;
+            return;
+        }
+
         movement.x = Input.GetAxisRaw("Horizontal");
         movement.y = Input.GetAxisRaw("Vertical");
 
-        // Verificăm dacă apasă Space în Update (pentru a nu rata input-ul)
         if (Input.GetButtonDown("Jump") && estePePamant)
-        {
             vreaSaSara = true;
-        }
     }
 
-    void FixedUpdate()
+    private void FixedUpdate()
     {
-        // Mișcare orizontală
+        if (!IsOwner || rb.isKinematic) return;
+
+        if (ControlBlocat())
+        {
+            rb.linearVelocity = new Vector3(0, rb.linearVelocity.y, 0);
+            return;
+        }
+
         Vector3 moveDirection = transform.right * movement.x + transform.forward * movement.y;
         if (moveDirection.magnitude > 1) moveDirection.Normalize();
 
-        MoveCharacter(moveDirection);
+        Vector3 targetVelocity = moveDirection * viteza;
+        rb.linearVelocity = new Vector3(targetVelocity.x, rb.linearVelocity.y, targetVelocity.z);
 
-        // Logică săritură
         if (vreaSaSara)
         {
             rb.AddForce(Vector3.up * fortaSaritura, ForceMode.Impulse);
             vreaSaSara = false;
-            estePePamant = false; // Presupunem că a părăsit solul
+            estePePamant = false;
         }
     }
 
-    void MoveCharacter(Vector3 direction)
-    {
-        Vector3 targetVelocity = direction * viteza;
-        rb.linearVelocity = new Vector3(targetVelocity.x, rb.linearVelocity.y, targetVelocity.z);
-    }
-
-    // Detectăm când atingem din nou pământul
     private void OnCollisionEnter(Collision collision)
     {
-        // Verificăm dacă obiectul de care ne-am izbit are o suprafață orizontală
-        // contacts[0].normal.y > 0.5f înseamnă că suprafața e destul de plată ca să stăm pe ea
         if (collision.contacts.Length > 0 && collision.contacts[0].normal.y > 0.5f)
-        {
             estePePamant = true;
-        }
+    }
+
+    /// <summary>Server cere owner-ului sa se teleporteze (spawn la rol).</summary>
+    [Rpc(SendTo.Owner)]
+    public void TeleportRpc(Vector3 pos, float yaw)
+    {
+        transform.SetPositionAndRotation(pos, Quaternion.Euler(0, yaw, 0));
+        if (!rb.isKinematic)
+            rb.linearVelocity = Vector3.zero;
+        var nt = GetComponent<NetworkTransform>();
+        if (nt != null) nt.Teleport(pos, Quaternion.Euler(0, yaw, 0), transform.localScale);
     }
 }

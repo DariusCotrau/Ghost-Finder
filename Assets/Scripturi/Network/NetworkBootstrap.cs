@@ -39,18 +39,27 @@ public class NetworkBootstrap : MonoBehaviour
         if (nm.IsClient || nm.IsServer) return;
 
         string role = PlayerPrefs.GetString("gf_net_role", "host");
+        SetAddress(PlayerPrefs.GetString("gf_join_ip", "127.0.0.1"));
+
         if (role == "join")
         {
-            string ip = PlayerPrefs.GetString("gf_join_ip", "127.0.0.1");
-            var transport = nm.GetComponent<UnityTransport>();
-            if (transport != null)
-                transport.ConnectionData.Address = string.IsNullOrWhiteSpace(ip) ? "127.0.0.1" : ip.Trim();
             nm.StartClient();
         }
-        else
+        else if (!nm.StartHost())
         {
-            nm.StartHost();
+            // Bind esuat (port 7777 ocupat = altcineva e deja host).
+            // Cade automat pe client ca sa nu ramana blocat.
+            Debug.LogWarning("[NetworkBootstrap] Host bind a esuat (port ocupat) -> incerc client.");
+            SetAddress("127.0.0.1");
+            nm.StartClient();
         }
+    }
+
+    private void SetAddress(string ip)
+    {
+        var transport = nm.GetComponent<UnityTransport>();
+        if (transport != null)
+            transport.ConnectionData.Address = string.IsNullOrWhiteSpace(ip) ? "127.0.0.1" : ip.Trim();
     }
 
     private void OnServerStarted()

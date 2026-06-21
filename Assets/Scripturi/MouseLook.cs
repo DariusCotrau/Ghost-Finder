@@ -1,32 +1,53 @@
+using Unity.Netcode;
 using UnityEngine;
 
-public class MouseLook : MonoBehaviour
+/// <summary>
+/// Camera la prima persoana, owner-authoritative. Doar owner-ul citeste mouse-ul
+/// si tine camera + AudioListener active (ceilalti jucatori au camera dezactivata
+/// pe instanta lor). Sensibilitatea vine din PlayerPrefs (setata in Main Menu).
+/// </summary>
+public class MouseLook : NetworkBehaviour
 {
     public float mouseSensitivity = 100f;
     public Transform playerBody;
 
+    [Header("Activate doar pentru owner")]
+    public Camera playerCamera;
+    public AudioListener audioListener;
+
     private float xRotation = 0f;
 
-    void Start()
+    public override void OnNetworkSpawn()
     {
-        // Blochează cursorul în centrul ecranului și îl ascunde
-        Cursor.lockState = CursorLockMode.Locked;
+        bool owner = IsOwner;
+
+        // Camera + audio doar pentru jucatorul local.
+        if (playerCamera != null) playerCamera.enabled = owner;
+        if (audioListener != null) audioListener.enabled = owner;
+
+        if (owner)
+        {
+            mouseSensitivity = PlayerPrefs.GetFloat("gf_sensitivity", 2f) * 50f;
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+        }
+        else
+        {
+            enabled = false; // nu rula Update pe non-owner
+        }
     }
 
-    void Update()
+    private void Update()
     {
-        // Preluăm mișcarea mouse-ului
+        if (!IsOwner) return;
+
         float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
         float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity * Time.deltaTime;
 
-        // Calculăm rotația pe verticală și o limităm (clamping) la 90 de grade
         xRotation -= mouseY;
         xRotation = Mathf.Clamp(xRotation, -90f, 90f);
 
-        // Aplicăm rotația camerei (sus-jos)
         transform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
-
-        // Rotim corpul jucătorului pe orizontală (stânga-dreapta)
-        playerBody.Rotate(Vector3.up * mouseX);
+        if (playerBody != null) playerBody.Rotate(Vector3.up * mouseX);
     }
 }

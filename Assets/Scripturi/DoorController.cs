@@ -1,33 +1,37 @@
+using Unity.Netcode;
 using UnityEngine;
 
-public class DoorController : MonoBehaviour
+/// <summary>
+/// Usa in scena. NetworkBehaviour: starea deschis/inchis e un NetworkVariable
+/// server-write; oricine poate cere comutarea prin ToggleDoorServerRpc
+/// (RequireOwnership=false). Usa trebuie sa aiba NetworkObject in scena.
+/// Animatia ruleaza pe toate peer-urile catre starea sincronizata.
+/// </summary>
+public class DoorController : NetworkBehaviour
 {
-    public bool isOpen = false;
-    public float openRotation = 90f; // Unghiul de deschidere
-    public float smooth = 2f;        // Viteza animației
+    public float openRotation = 90f;
+    public float smooth = 2f;
+
+    private readonly NetworkVariable<bool> IsOpen = new NetworkVariable<bool>(false);
 
     private Quaternion closedRot;
     private Quaternion openRot;
 
-    void Start()
+    private void Start()
     {
-        // Memorăm rotația inițială (închisă)
         closedRot = transform.localRotation;
-        // Calculăm rotația pentru deschis
         openRot = Quaternion.Euler(0, openRotation, 0) * closedRot;
     }
 
-    void Update()
+    private void Update()
     {
-        // Animăm rotația ușii către starea dorită
-        if (isOpen)
-            transform.localRotation = Quaternion.Slerp(transform.localRotation, openRot, Time.deltaTime * smooth);
-        else
-            transform.localRotation = Quaternion.Slerp(transform.localRotation, closedRot, Time.deltaTime * smooth);
+        Quaternion target = IsOpen.Value ? openRot : closedRot;
+        transform.localRotation = Quaternion.Slerp(transform.localRotation, target, Time.deltaTime * smooth);
     }
 
-    public void ToggleDoor()
+    [Rpc(SendTo.Server, RequireOwnership = false)]
+    public void ToggleDoorServerRpc()
     {
-        isOpen = !isOpen;
+        IsOpen.Value = !IsOpen.Value;
     }
 }
