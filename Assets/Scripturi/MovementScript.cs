@@ -31,10 +31,14 @@ public class MovementScript : NetworkBehaviour
 
     public override void OnNetworkSpawn()
     {
+        Debug.Log($"[GHOST] Movement.OnNetworkSpawn IsOwner={IsOwner} GM={(GameManager.Instance != null)}");
         // Non-owner nu simuleaza fizica local (NetworkTransform conduce pozitia).
         if (!IsOwner)
             rb.isKinematic = true;
     }
+
+    private bool loggedOnce;
+    private bool lastBlocked;
 
     /// <summary>Controlul e blocat? (lobby, prins, eliminat).</summary>
     private bool ControlBlocat()
@@ -50,6 +54,15 @@ public class MovementScript : NetworkBehaviour
     private void Update()
     {
         if (!IsOwner) return;
+
+        bool blocked = ControlBlocat();
+        if (!loggedOnce || blocked != lastBlocked)
+        {
+            loggedOnce = true;
+            lastBlocked = blocked;
+            var gm = GameManager.Instance;
+            Debug.Log($"[GHOST] Movement.Update owner=1 ControlBlocat={blocked} GM={(gm != null)} MatchStarted={(gm != null && gm.MatchStarted.Value)} scene={UnityEngine.SceneManagement.SceneManager.GetActiveScene().name}");
+        }
 
         if (ControlBlocat())
         {

@@ -45,6 +45,14 @@ public class GameManager : NetworkBehaviour
     {
         if (IsServer)
             NetworkManager.SceneManager.OnLoadEventCompleted += OnSceneLoaded;
+
+        // Fiecare client creeaza un HUD persistent (cod, fara dependenta de scena).
+        if (GameHUD.Instance == null)
+        {
+            var go = new GameObject("GameHUDRuntime");
+            DontDestroyOnLoad(go); // GameHUD = MonoBehaviour simplu, DDOL e safe
+            go.AddComponent<GameHUD>();
+        }
     }
 
     public override void OnDestroy()
@@ -107,13 +115,18 @@ public class GameManager : NetworkBehaviour
     private void OnSceneLoaded(string sceneName, LoadSceneMode mode,
         List<ulong> clientsCompleted, List<ulong> clientsTimedOut)
     {
+        Debug.Log($"[GHOST] OnSceneLoaded scene={sceneName} players={AllPlayers().Length} MatchStarted={MatchStarted.Value} GMInstance={(Instance != null)}");
         if (sceneName != gameplaySceneName) return;
         SpawnPlayers();
     }
 
     private void SpawnPlayers()
     {
-        if (SpawnManager.Instance == null) return;
+        if (SpawnManager.Instance == null)
+        {
+            Debug.LogWarning("[GHOST] SpawnManager.Instance NULL - nu teleportez");
+            return;
+        }
         int hunters = 0, ghosts = 0;
         foreach (var p in AllPlayers())
         {
@@ -124,6 +137,7 @@ public class GameManager : NetworkBehaviour
                 ? SpawnManager.Instance.GetSpawn(PlayerRole.Ghost, ghosts++)
                 : SpawnManager.Instance.GetSpawn(PlayerRole.Hunter, hunters++);
 
+            Debug.Log($"[GHOST] Spawn {p.DisplayName.Value} role={p.Role.Value} spawn={(spawn != null ? spawn.position.ToString() : "NULL")}");
             if (spawn != null)
                 move.TeleportRpc(spawn.position, spawn.eulerAngles.y);
         }

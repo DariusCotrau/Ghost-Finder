@@ -19,6 +19,14 @@ public class GameHUD : MonoBehaviour
     // Citit de MouseLook ca sa elibereze cursorul cand un meniu e deschis.
     public static bool MenuOpen { get; private set; }
 
+    public static GameHUD Instance { get; private set; }
+
+    private void Awake()
+    {
+        if (Instance != null && Instance != this) { Destroy(gameObject); return; }
+        Instance = this;
+    }
+
     private Font font;
 
     private GameObject hudPanel;
@@ -42,6 +50,7 @@ public class GameHUD : MonoBehaviour
 
     private void Start()
     {
+        Debug.Log("[GHOST] GameHUD.Start ruleaza");
         font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
         EnsureEventSystem();
         BuildUI();
@@ -56,6 +65,7 @@ public class GameHUD : MonoBehaviour
 
     private void OnDestroy()
     {
+        if (Instance == this) Instance = null;
         MenuOpen = false;
         var nm = NetworkManager.Singleton;
         if (nm != null)
