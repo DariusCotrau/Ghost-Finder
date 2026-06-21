@@ -1,49 +1,74 @@
 using UnityEngine;
-using TMPro; // Necesar pentru TextMeshPro
+using TMPro;
 
 public class PlayerInteraction : MonoBehaviour
 {
-    public float interactDistance = 3f;
-    public GameObject interactText; // Trage obiectul "Text (TMP)" aici în Inspector
+public float interactDistance = 3f;
+public GameObject interactText;
 
-    void Start()
+private PlayerInventory inventory;
+
+void Start()
+{
+    inventory = GetComponent<PlayerInventory>();
+
+    if (interactText != null)
+        interactText.SetActive(false);
+}
+
+void Update()
+{
+    Ray ray = new Ray(transform.position, transform.forward);
+    RaycastHit hit;
+
+    if (Physics.Raycast(ray, out hit, interactDistance))
     {
-        // Ne asigurăm că textul este ascuns la începutul jocului
-        if (interactText != null)
-            interactText.SetActive(false);
-    }
+        // Verificam mai intai daca este un pickup
+        ItemPickup pickup =
+            hit.collider.GetComponentInParent<ItemPickup>();
 
-    void Update()
-    {
-        Ray ray = new Ray(transform.position, transform.forward);
-        RaycastHit hit;
-
-        // Verificăm dacă raza lovește ceva
-        if (Physics.Raycast(ray, out hit, interactDistance))
+        if (pickup != null)
         {
-            // Căutăm scriptul de ușă pe obiectul lovit sau pe părinții lui
-            DoorController door = hit.collider.GetComponentInParent<DoorController>();
+            if (interactText != null)
+                interactText.SetActive(true);
 
-            if (door != null)
+            if (Input.GetKeyDown(KeyCode.E))
             {
-                // Dacă vedem o ușă, afișăm textul "E"
-                if (interactText != null) interactText.SetActive(true);
-
-                if (Input.GetKeyDown(KeyCode.E))
+                if (inventory != null &&
+                    inventory.AddItem(pickup.itemType))
                 {
-                    door.ToggleDoor();
+                    Destroy(pickup.gameObject);
                 }
             }
-            else
+
+            return;
+        }
+
+        // Verificam apoi daca este o usa
+        DoorController door =
+            hit.collider.GetComponentInParent<DoorController>();
+
+        if (door != null)
+        {
+            if (interactText != null)
+                interactText.SetActive(true);
+
+            if (Input.GetKeyDown(KeyCode.E))
             {
-                // Dacă lovim altceva care nu e ușă, ascundem textul
-                if (interactText != null) interactText.SetActive(false);
+                door.ToggleDoor();
             }
         }
         else
         {
-            // Dacă nu lovim nimic, ascundem textul
-            if (interactText != null) interactText.SetActive(false);
+            if (interactText != null)
+                interactText.SetActive(false);
         }
     }
+    else
+    {
+        if (interactText != null)
+            interactText.SetActive(false);
+    }
+}
+
 }
