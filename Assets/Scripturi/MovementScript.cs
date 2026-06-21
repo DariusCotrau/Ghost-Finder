@@ -13,8 +13,9 @@ public class MovementScript : NetworkBehaviour
     private PlayerGhostVisibility ghostVis; // null daca nu e fantoma
     private LobbyPlayer lobbyPlayer;
 
-    // Control blocat daca: fantoma prinsa SAU hunter eliminat.
+    // Control blocat daca: meci nepornit (in lobby) SAU fantoma prinsa SAU hunter eliminat.
     private bool ContolBlocat =>
+        (GameManager.Instance != null && !GameManager.Instance.MatchStarted.Value) ||
         (ghostVis != null && ghostVis.Caught.Value) ||
         (lobbyPlayer != null && lobbyPlayer.Eliminated.Value);
 

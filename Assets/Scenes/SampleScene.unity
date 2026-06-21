@@ -2536,9 +2536,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79a2f2de3631b9a41b9695534ca59f3c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DoorController
-  isOpen: 0
+  ShowTopMostFoldoutHeaderGroup: 1
   openRotation: 90
   smooth: 2
+  IsOpen:
+    m_InternalValue: 0
 --- !u!1001 &140108022
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3682,6 +3684,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f25beb75b65ab344fa39eb60efe934c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MotionSensor
+  ShowTopMostFoldoutHeaderGroup: 1
   beepInterval: 1
 --- !u!82 &191474618
 AudioSource:
@@ -5939,9 +5942,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79a2f2de3631b9a41b9695534ca59f3c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DoorController
-  isOpen: 0
+  ShowTopMostFoldoutHeaderGroup: 1
   openRotation: 90
   smooth: 2
+  IsOpen:
+    m_InternalValue: 0
 --- !u!1 &269684066
 GameObject:
   m_ObjectHideFlags: 0
@@ -6111,9 +6116,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79a2f2de3631b9a41b9695534ca59f3c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DoorController
-  isOpen: 0
+  ShowTopMostFoldoutHeaderGroup: 1
   openRotation: 90
   smooth: 2
+  IsOpen:
+    m_InternalValue: 0
 --- !u!1001 &292912127
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6999,8 +7006,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 81eb446c221fecf468da4f8d1854b994, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MouseLook
+  ShowTopMostFoldoutHeaderGroup: 1
   mouseSensitivity: 100
   playerBody: {fileID: 753050619}
+  playerCamera: {fileID: 0}
+  audioListener: {fileID: 0}
 --- !u!114 &330585549
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7013,8 +7023,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5916d2ddda0c7c840868a452614db9ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerInteraction
+  ShowTopMostFoldoutHeaderGroup: 1
   interactDistance: 3
   interactText: {fileID: 1644722499}
+  aimCamera: {fileID: 0}
 --- !u!1 &335708988
 GameObject:
   m_ObjectHideFlags: 0
@@ -7067,9 +7079,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79a2f2de3631b9a41b9695534ca59f3c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DoorController
-  isOpen: 0
+  ShowTopMostFoldoutHeaderGroup: 1
   openRotation: 90
   smooth: 2
+  IsOpen:
+    m_InternalValue: 0
 --- !u!1 &340941555 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2461866773410160452, guid: 4777a8928b5c97d4598964909c8a1223, type: 3}
@@ -10671,11 +10685,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 51954a67bbdc54047a66acebbc8a9af9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UVFlashlight
+  ShowTopMostFoldoutHeaderGroup: 1
   uvLightObject: {fileID: 1466021531}
   lightRange: 10
   ghostLayer:
     serializedVersion: 2
     m_Bits: 8
+  aimCamera: {fileID: 0}
   maxBatteryDuration: 5
   rechargeDuration: 10
   batterySlider: {fileID: 794808083}
@@ -11555,9 +11571,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79a2f2de3631b9a41b9695534ca59f3c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DoorController
-  isOpen: 0
+  ShowTopMostFoldoutHeaderGroup: 1
   openRotation: 90
   smooth: 2
+  IsOpen:
+    m_InternalValue: 0
 --- !u!1001 &585248223
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -14346,6 +14364,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 5127665253469060, guid: 04dadcfb8f3a78347aff46020e1aae74, type: 3}
       insertIndex: -1
       addedObject: {fileID: 753050622}
+    - targetCorrespondingSourceObject: {fileID: 5127665253469060, guid: 04dadcfb8f3a78347aff46020e1aae74, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 753050623}
   m_SourcePrefab: {fileID: 100100000, guid: 04dadcfb8f3a78347aff46020e1aae74, type: 3}
 --- !u!1 &753050618 stripped
 GameObject:
@@ -14369,6 +14390,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 55fbf52c3ce92c44baf21684e16749b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MovementScript
+  ShowTopMostFoldoutHeaderGroup: 1
   viteza: 5
   fortaSaritura: 5
 --- !u!54 &753050621
@@ -14421,6 +14443,31 @@ CapsuleCollider:
   m_Height: 2.4878545
   m_Direction: 1
   m_Center: {x: 0, y: 1.2769165, z: 0}
+--- !u!114 &753050623
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 753050618}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
+  GlobalObjectIdHash: 1332987301
+  InScenePlacedSourceGlobalObjectIdHash: 0
+  DeferredDespawnTick: 0
+  Ownership: 1
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 0
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
+  SyncOwnerTransformWhenParented: 1
+  AllowOwnerToParent: 0
 --- !u!4 &759223687 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 400000, guid: 9bd72fad8a317e24ca28a013b205fea2, type: 3}
@@ -14966,9 +15013,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79a2f2de3631b9a41b9695534ca59f3c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DoorController
-  isOpen: 0
+  ShowTopMostFoldoutHeaderGroup: 1
   openRotation: 90
   smooth: 2
+  IsOpen:
+    m_InternalValue: 0
 --- !u!1 &789356783
 GameObject:
   m_ObjectHideFlags: 0
@@ -15536,9 +15585,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79a2f2de3631b9a41b9695534ca59f3c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DoorController
-  isOpen: 0
+  ShowTopMostFoldoutHeaderGroup: 1
   openRotation: 90
   smooth: 2
+  IsOpen:
+    m_InternalValue: 0
 --- !u!1 &811003481
 GameObject:
   m_ObjectHideFlags: 0
@@ -15796,9 +15847,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79a2f2de3631b9a41b9695534ca59f3c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DoorController
-  isOpen: 0
+  ShowTopMostFoldoutHeaderGroup: 1
   openRotation: 90
   smooth: 2
+  IsOpen:
+    m_InternalValue: 0
 --- !u!1 &832575517
 GameObject:
   m_ObjectHideFlags: 0
@@ -16272,9 +16325,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79a2f2de3631b9a41b9695534ca59f3c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DoorController
-  isOpen: 0
+  ShowTopMostFoldoutHeaderGroup: 1
   openRotation: 90
   smooth: 2
+  IsOpen:
+    m_InternalValue: 0
 --- !u!1 &861168034
 GameObject:
   m_ObjectHideFlags: 0
@@ -16944,8 +16999,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b6c1548eaed5b8f40b32e06afa7370d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LanternController
+  ShowTopMostFoldoutHeaderGroup: 1
   lanternLight: {fileID: 883691829}
-  isOn: 0
+  IsOn:
+    m_InternalValue: 1
 --- !u!1001 &884221460
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -19845,9 +19902,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79a2f2de3631b9a41b9695534ca59f3c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DoorController
-  isOpen: 0
+  ShowTopMostFoldoutHeaderGroup: 1
   openRotation: 90
   smooth: 2
+  IsOpen:
+    m_InternalValue: 0
 --- !u!1001 &987060421
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -20879,9 +20938,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79a2f2de3631b9a41b9695534ca59f3c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DoorController
-  isOpen: 0
+  ShowTopMostFoldoutHeaderGroup: 1
   openRotation: -98.884
   smooth: 2
+  IsOpen:
+    m_InternalValue: 0
 --- !u!1 &1035336582
 GameObject:
   m_ObjectHideFlags: 0
@@ -24223,9 +24284,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79a2f2de3631b9a41b9695534ca59f3c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DoorController
-  isOpen: 0
+  ShowTopMostFoldoutHeaderGroup: 1
   openRotation: 90
   smooth: 2
+  IsOpen:
+    m_InternalValue: 0
 --- !u!1001 &1186039569
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -26143,6 +26206,50 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: -3333177389955251279, guid: 99d6e06828bc21f4eac325e1689e675b, type: 3}
+--- !u!1 &1236341015
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1236341017}
+  - component: {fileID: 1236341018}
+  m_Layer: 0
+  m_Name: LobbyUI
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1236341017
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1236341015}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -17.37632, y: -24.64206, z: -14.51082}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1236341018
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1236341015}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3346dcd096920ed44bd9a12f73f3084f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LobbyUI
 --- !u!1 &1240186168 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7867704217085496452, guid: 4777a8928b5c97d4598964909c8a1223, type: 3}
@@ -30309,9 +30416,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79a2f2de3631b9a41b9695534ca59f3c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DoorController
-  isOpen: 0
+  ShowTopMostFoldoutHeaderGroup: 1
   openRotation: 90
   smooth: 2
+  IsOpen:
+    m_InternalValue: 0
 --- !u!1 &1505807111
 GameObject:
   m_ObjectHideFlags: 0
@@ -30578,9 +30687,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79a2f2de3631b9a41b9695534ca59f3c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DoorController
-  isOpen: 0
+  ShowTopMostFoldoutHeaderGroup: 1
   openRotation: 90
   smooth: 2
+  IsOpen:
+    m_InternalValue: 0
 --- !u!1 &1527807779 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2461866771689563795, guid: 4777a8928b5c97d4598964909c8a1223, type: 3}
@@ -33993,6 +34104,110 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1030992272, guid: abc00000000011627893098031340007, type: 3}
   m_PrefabInstance: {fileID: 1750295702}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1750507306
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1750507309}
+  - component: {fileID: 1750507308}
+  - component: {fileID: 1750507307}
+  m_Layer: 0
+  m_Name: NetworkManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1750507307
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1750507306}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6960e84d07fb87f47956e7a81d71c4e6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.Transports.UTP.UnityTransport
+  m_ProtocolType: 0
+  m_UseWebSockets: 0
+  m_UseEncryption: 0
+  m_MaxPacketQueueSize: 128
+  m_MaxPayloadSize: 6144
+  m_HeartbeatTimeoutMS: 500
+  m_ConnectTimeoutMS: 1000
+  m_MaxConnectAttempts: 60
+  m_DisconnectTimeoutMS: 30000
+  ConnectionData:
+    Address: 127.0.0.1
+    Port: 7777
+    ServerListenAddress: 
+  DebugSimulator:
+    PacketDelayMS: 0
+    PacketJitterMS: 0
+    PacketDropRate: 0
+--- !u!114 &1750507308
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1750507306}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 593a2fe42fa9d37498c96f9a383b6521, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkManager
+  NetworkManagerExpanded: 0
+  NetworkConfig:
+    ProtocolVersion: 0
+    NetworkTransport: {fileID: 1750507307}
+    PlayerPrefab: {fileID: 753050618}
+    Prefabs:
+      NetworkPrefabsLists:
+      - {fileID: 11400000, guid: 76db5bdac15240c409a6f41114b59ccc, type: 2}
+    TickRate: 30
+    ClientConnectionBufferTimeout: 10
+    ConnectionApproval: 0
+    ConnectionData: 
+    EnableTimeResync: 0
+    TimeResyncInterval: 30
+    EnsureNetworkVariableLengthSafety: 0
+    EnableSceneManagement: 1
+    ForceSamePrefabs: 1
+    RecycleNetworkIds: 1
+    NetworkIdRecycleDelay: 120
+    RpcHashSize: 0
+    LoadSceneTimeOut: 120
+    SpawnTimeout: 10
+    EnableNetworkLogs: 1
+    NetworkTopology: 0
+    UseCMBService: 0
+    AutoSpawnPlayerPrefabClientSide: 1
+    NetworkProfilingMetrics: 1
+    OldPrefabList: []
+  RunInBackground: 1
+  LogLevel: 1
+--- !u!4 &1750507309
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1750507306}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -17.37632, y: -24.64206, z: -14.51082}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1753039581
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -38989,6 +39204,86 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: -7135668940821078097, guid: e0147f4678533444ca8209554a9ead22, type: 3}
+--- !u!1 &2005085089
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2005085092}
+  - component: {fileID: 2005085090}
+  - component: {fileID: 2005085091}
+  m_Layer: 0
+  m_Name: GameManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &2005085090
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2005085089}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
+  GlobalObjectIdHash: 2714226410
+  InScenePlacedSourceGlobalObjectIdHash: 0
+  DeferredDespawnTick: 0
+  Ownership: 1
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 0
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
+  SyncOwnerTransformWhenParented: 1
+  AllowOwnerToParent: 0
+--- !u!114 &2005085091
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2005085089}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4d0517558a5385749b0eac0083691668, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GameManager
+  ShowTopMostFoldoutHeaderGroup: 1
+  matchDuration: 300
+  TimeRemaining:
+    m_InternalValue: 0
+  MatchStarted:
+    m_InternalValue: 0
+  MatchEnded:
+    m_InternalValue: 0
+  Winner:
+    m_InternalValue: 0
+--- !u!4 &2005085092
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2005085089}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -17.37632, y: -24.64206, z: -14.51082}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &2006199625
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -42118,3 +42413,6 @@ SceneRoots:
   - {fileID: 753050617}
   - {fileID: 1186508984}
   - {fileID: 1227933833369837135}
+  - {fileID: 1750507309}
+  - {fileID: 1236341017}
+  - {fileID: 2005085092}

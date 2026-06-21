@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 /// <summary>
 /// Singleton de scena (NetworkObject). Gestioneaza starea meciului si
@@ -14,6 +15,12 @@ public class GameManager : NetworkBehaviour
     public static GameManager Instance { get; private set; }
 
     public const int MinPlayers = 2;
+
+    [Header("Scene")]
+    [Tooltip("Numele scenei de joc (mapa). Trebuie adaugata in Build Settings.")]
+    public string gameplaySceneName = "SampleScene";
+    [Tooltip("Numele scenei de lobby. Trebuie adaugata in Build Settings.")]
+    public string lobbySceneName = "Lobby";
 
     [Header("Setari Meci")]
     [Tooltip("Durata meciului in secunde. La expirare, daca exista fantome ramase -> Ghost castiga (a supravietuit).")]
@@ -51,6 +58,8 @@ public class GameManager : NetworkBehaviour
             return;
         }
         Instance = this;
+        // Persistent intre scena Lobby si scena de joc (spawnat dinamic de NetworkBootstrap).
+        DontDestroyOnLoad(gameObject);
     }
 
     /// <summary>
@@ -72,13 +81,29 @@ public class GameManager : NetworkBehaviour
             return;
         }
 
+        // Incarcam scena de joc pe toti clientii. Rolurile + spawn-ul se fac
+        // dupa ce scena s-a incarcat peste tot (SpawnManager exista abia acolo).
+        NetworkManager.SceneManager.OnLoadEventCompleted += OnGameplayLoaded;
+        NetworkManager.SceneManager.LoadScene(gameplaySceneName, LoadSceneMode.Single);
+        Debug.Log($"[GAME] Incarc scena de joc '{gameplaySceneName}'...");
+    }
+
+    /// <summary>
+    /// Apelat cand scena de joc s-a incarcat la toti clientii. Atribuie roluri,
+    /// pozitioneaza jucatorii si porneste meciul. Server-only.
+    /// </summary>
+    private void OnGameplayLoaded(string sceneName, LoadSceneMode mode, List<ulong> done, List<ulong> timedOut)
+    {
+        if (sceneName != gameplaySceneName) return;
+        NetworkManager.SceneManager.OnLoadEventCompleted -= OnGameplayLoaded;
+
         AssignRoles();
         SpawnPlayers();
         TimeRemaining.Value = matchDuration;
         MatchStarted.Value = true;
         MatchEnded.Value = false;
         Winner.Value = PlayerRole.None;
-        Debug.Log("[GAME] Meci pornit. Roluri atribuite.");
+        Debug.Log("[GAME] Scena incarcata. Meci pornit, roluri atribuite.");
     }
 
     void Update()
@@ -265,5 +290,8 @@ public class GameManager : NetworkBehaviour
                 gv.Revealed.Value = false;
             }
         }
+
+        // Inapoi in scena de lobby.
+        NetworkManager.SceneManager.LoadScene(lobbySceneName, LoadSceneMode.Single);
     }
 }
