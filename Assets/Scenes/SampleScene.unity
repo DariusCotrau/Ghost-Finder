@@ -7260,6 +7260,7 @@ Transform:
   - {fileID: 883691827}
   - {fileID: 541239026}
   - {fileID: 1670741640723400280}
+  - {fileID: 1227933833369837135}
   m_Father: {fileID: 753050619}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &330585547
@@ -25286,6 +25287,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 4493914613880827488, guid: 6dc4cf4496348884d8ee27743ae38562, type: 3}
+      propertyPath: m_TagString
+      value: Ghost
+      objectReference: {fileID: 0}
     - target: {fileID: 4710940672626480558, guid: 6dc4cf4496348884d8ee27743ae38562, type: 3}
       propertyPath: m_Layer
       value: 3
@@ -25424,6 +25429,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 4493914613880827488, guid: 6dc4cf4496348884d8ee27743ae38562, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1186508989}
+    - targetCorrespondingSourceObject: {fileID: 4493914613880827488, guid: 6dc4cf4496348884d8ee27743ae38562, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1186508992}
   m_SourcePrefab: {fileID: 100100000, guid: 6dc4cf4496348884d8ee27743ae38562, type: 3}
 --- !u!1 &1186508985 stripped
 GameObject:
@@ -25467,6 +25475,33 @@ CapsuleCollider:
   m_Height: 2.362701
   m_Direction: 1
   m_Center: {x: 0.00048001608, y: 0.6257928, z: 0}
+--- !u!54 &1186508992
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1186508985}
+  serializedVersion: 5
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &1187030321
 GameObject:
   m_ObjectHideFlags: 0
@@ -43195,13 +43230,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1891986816731514101}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.7071068, y: -0, z: 0.7071068, w: 0}
-  m_LocalPosition: {x: -18.239, y: 0.1669, z: -4.416}
-  m_LocalScale: {x: 39.992023, y: 40.000042, z: 40}
+  m_LocalRotation: {x: -0, y: -0, z: 1, w: 0}
+  m_LocalPosition: {x: 0.01273286, y: -0.60231495, z: -0.22615369}
+  m_LocalScale: {x: 86.13667, y: 53.84621, z: 86.153854}
   m_ConstrainProportionsScale: 1
   m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 90, z: 180}
+  m_Father: {fileID: 330585546}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 180}
 --- !u!1 &1338406100294738830
 GameObject:
   m_ObjectHideFlags: 0
@@ -43248,6 +43283,7 @@ GameObject:
   - component: {fileID: 1227933833369837135}
   - component: {fileID: 2784813113025647082}
   - component: {fileID: 90445329990591776}
+  - component: {fileID: 2784813113025647083}
   m_Layer: 0
   m_Name: Crucifix
   m_TagString: Untagged
@@ -43290,6 +43326,20 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1891986816731514101}
   m_Mesh: {fileID: -5495902117074765545, guid: 4c81b95f81412d348a803b0d754397fc, type: 3}
+--- !u!114 &2784813113025647083
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1891986816731514101}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be32097c4a587c04d8b079fdf7718aaf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CrucifixExorcism
+  exorcismRange: 5
+  timeNeededToWin: 3
 --- !u!23 &4036449747684483597
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -43784,7 +43834,6 @@ SceneRoots:
   - {fileID: 386033526}
   - {fileID: 465687122}
   - {fileID: 761440232}
-  - {fileID: 1227933833369837135}
   - {fileID: 1895814131}
   - {fileID: 753050617}
   - {fileID: 1186508984}
