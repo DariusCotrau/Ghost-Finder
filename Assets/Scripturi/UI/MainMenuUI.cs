@@ -195,7 +195,7 @@ public class MainMenuUI : MonoBehaviour
         // Volum
         Label(settingsPanel.transform, "Volum", 16, FontStyle.Normal, ColText, new Vector2(-150, 110), new Vector2(160, 24));
         var volLabel = Label(settingsPanel.transform, "", 16, FontStyle.Bold, ColText, new Vector2(170, 110), new Vector2(80, 24));
-        var volSlider = Slider(settingsPanel.transform, new Vector2(10, 110), new Vector2(220, 24),
+        var volSlider = MakeSlider(settingsPanel.transform, new Vector2(10, 110), new Vector2(220, 24),
             0f, 1f, PlayerPrefs.GetFloat(KeyVolume, 1f));
         volSlider.onValueChanged.AddListener(v =>
         {
@@ -209,7 +209,7 @@ public class MainMenuUI : MonoBehaviour
         // Sensibilitate mouse
         Label(settingsPanel.transform, "Sensibilitate", 16, FontStyle.Normal, ColText, new Vector2(-150, 55), new Vector2(180, 24));
         var sensLabel = Label(settingsPanel.transform, "", 16, FontStyle.Bold, ColText, new Vector2(170, 55), new Vector2(80, 24));
-        var sensSlider = Slider(settingsPanel.transform, new Vector2(10, 55), new Vector2(220, 24),
+        var sensSlider = MakeSlider(settingsPanel.transform, new Vector2(10, 55), new Vector2(220, 24),
             0.5f, 5f, PlayerPrefs.GetFloat(KeySensitivity, 2f));
         sensSlider.onValueChanged.AddListener(v =>
         {
@@ -219,7 +219,7 @@ public class MainMenuUI : MonoBehaviour
         sensLabel.text = sensSlider.value.ToString("0.0");
 
         // Fullscreen toggle
-        var fsToggle = Toggle(settingsPanel.transform, "Fullscreen", new Vector2(0, 0), new Vector2(300, 30),
+        var fsToggle = MakeToggle(settingsPanel.transform, "Fullscreen", new Vector2(0, 0), new Vector2(300, 30),
             PlayerPrefs.GetInt(KeyFullscreen, Screen.fullScreen ? 1 : 0) == 1);
         fsToggle.onValueChanged.AddListener(on =>
         {
@@ -304,7 +304,7 @@ public class MainMenuUI : MonoBehaviour
         return field;
     }
 
-    private Slider Slider(Transform parent, Vector2 pos, Vector2 dim, float min, float max, float val)
+    private Slider MakeSlider(Transform parent, Vector2 pos, Vector2 dim, float min, float max, float val)
     {
         var go = new GameObject("Slider", typeof(Slider));
         go.transform.SetParent(parent, false);
@@ -354,7 +354,7 @@ public class MainMenuUI : MonoBehaviour
         return slider;
     }
 
-    private Toggle Toggle(Transform parent, string label, Vector2 pos, Vector2 dim, bool on)
+    private Toggle MakeToggle(Transform parent, string label, Vector2 pos, Vector2 dim, bool on)
     {
         var go = new GameObject("Toggle", typeof(Toggle));
         go.transform.SetParent(parent, false);

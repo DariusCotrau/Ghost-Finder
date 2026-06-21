@@ -258,7 +258,6 @@ GameObject:
   - component: {fileID: 194618522}
   - component: {fileID: 194618521}
   - component: {fileID: 194618520}
-  - component: {fileID: 194618519}
   m_Layer: 0
   m_Name: NetworkManager
   m_TagString: Untagged
@@ -281,37 +280,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &194618519
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 194618517}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3346dcd096920ed44bd9a12f73f3084f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::LobbyUI
-  title: GHOST FINDER
-  font: {fileID: 0}
-  joinAddress: 127.0.0.1
-  status: 
-  connectPanel: {fileID: 0}
-  ipField: {fileID: 0}
-  connectStatus: {fileID: 0}
-  lobbyPanel: {fileID: 0}
-  headerText: {fileID: 0}
-  waitText: {fileID: 0}
-  playersText: {fileID: 0}
-  startBtn: {fileID: 0}
-  hudPanel: {fileID: 0}
-  hudTimer: {fileID: 0}
-  pausePanel: {fileID: 0}
-  pauseResetBtn: {fileID: 0}
-  endPanel: {fileID: 0}
-  endText: {fileID: 0}
-  endResetBtn: {fileID: 0}
 --- !u!114 &194618520
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -321,10 +289,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 194618517}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 37e984a56e7ca844ab6a5b5e2e259164, type: 3}
-  m_Name: 
+  m_Script: {fileID: 11500000, guid: 1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a04, type: 3}
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::NetworkBootstrap
-  gameManagerPrefab: {fileID: 1849706812704968364, guid: 5f9eeb25372f2f249a086e16f4699f89, type: 3}
+  gameManagerPrefab: {fileID: 6700000000000000001, guid: bb02bb02bb02bb02bb02bb02bb02bb02, type: 3}
+  autoConnect: 1
 --- !u!114 &194618521
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -385,7 +354,7 @@ MonoBehaviour:
   NetworkConfig:
     ProtocolVersion: 0
     NetworkTransport: {fileID: 194618521}
-    PlayerPrefab: {fileID: 8579078564897324028, guid: e7dbf94b8944fc3418ddf98ab2339f37, type: 3}
+    PlayerPrefab: {fileID: 6600000000000000001, guid: aa01aa01aa01aa01aa01aa01aa01aa01, type: 3}
     Prefabs:
       NetworkPrefabsLists:
       - {fileID: 11400000, guid: 76db5bdac15240c409a6f41114b59ccc, type: 2}
