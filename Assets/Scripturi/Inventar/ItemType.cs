@@ -2,5 +2,6 @@ public enum ItemType
 {
     UVFlashlight,
     EMFReader,
-    MotionSensor
+    MotionSensor,
+    Crucifix
 }

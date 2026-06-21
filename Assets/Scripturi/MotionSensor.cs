@@ -33,8 +33,6 @@ public class MotionSensor : MonoBehaviour
     // Ruleaza automat cand un corp intra in sfera invizibila (Trigger)
     private void OnTriggerEnter(Collider other)
     {
-        // MOMENTAN: Verificam daca cel care a intrat este Jucatorul (poti folosi Tag-ul "Player")
-        // Mai incolo, cand fantoma va merge, poti schimba sa verifice tag-ul "Ghost" sau layer-ul
         if (other.CompareTag("Player")) 
         {
             isObjectInside = true;
@@ -52,6 +50,25 @@ public class MotionSensor : MonoBehaviour
             Debug.Log("[SENZOR] Zona este din nou sigura.");
         }
     }
+
+    // === COPIAZĂ DE AICI JOS PENTRU FISICĂ ===
+
+    // Ruleaza automat cand obiectul fizic loveste podeaua sau un perete dupa ce l-ai aruncat
+    private void OnCollisionEnter(Collision collision)
+    {
+        // Daca am lovit mediul (podea, pereti, mobila - adica NU player-ul)
+        if (!collision.gameObject.CompareTag("Player"))
+        {
+            Rigidbody rb = GetComponent<Rigidbody>();
+            if (rb != null)
+            {
+                rb.isKinematic = true; // Înghețăm senzorul pe loc ca sa nu treaca sub harta
+                Debug.Log("[SENZOR] S-a oprit pe sol si a activat masurile anti-cadere.");
+            }
+        }
+    }
+
+    // =========================================
 
     void PlayBeep()
     {
