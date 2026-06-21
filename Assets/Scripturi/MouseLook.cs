@@ -37,7 +37,7 @@ public class MouseLook : NetworkBehaviour
 
         // In lobby / dupa meci: cursor liber, fara rotire (ca sa poti da click pe UI).
         var gm = GameManager.Instance;
-        bool playing = gm != null && gm.MatchStarted.Value && !gm.MatchEnded.Value;
+        bool playing = gm != null && gm.MatchStarted.Value && !gm.MatchEnded.Value && !GameHUD.MenuOpen;
         if (!playing)
         {
             if (Cursor.lockState != CursorLockMode.None)
