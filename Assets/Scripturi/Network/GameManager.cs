@@ -37,7 +37,8 @@ public class GameManager : NetworkBehaviour
     {
         if (Instance != null && Instance != this) { Destroy(gameObject); return; }
         Instance = this;
-        DontDestroyOnLoad(gameObject);
+        // Fara DontDestroyOnLoad: NGO persista NetworkObject-ul spawnat intre
+        // scenele incarcate prin NetworkManager (DestroyWithScene=false).
     }
 
     public override void OnNetworkSpawn()

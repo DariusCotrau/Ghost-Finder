@@ -33,10 +33,9 @@ public class LobbyPlayer : NetworkBehaviour
 
     public override void OnNetworkSpawn()
     {
-        // Persista peste schimbarea de scena (lobby -> joc).
-        if (IsServer || IsOwner)
-            DontDestroyOnLoad(gameObject);
-
+        // NU apela DontDestroyOnLoad: NGO migreaza singur obiectele spawnate
+        // (DestroyWithScene=false) la incarcarea scenei prin NetworkManager.
+        // DontDestroyOnLoad + scene management dezactiveaza obiectul.
         if (IsOwner)
         {
             string name = PlayerPrefs.GetString("gf_player_name", "");

@@ -74,6 +74,13 @@ public class LobbyController : MonoBehaviour
         var gm = GameManager.Instance;
         bool started = gm != null && gm.MatchStarted.Value;
 
+        // In lobby cursorul trebuie sa fie mereu liber (sa poti da click).
+        if (Cursor.lockState != CursorLockMode.None)
+        {
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+        }
+
         // Cat timp se conecteaza sau se atribuie roluri -> doar mesaj.
         bool ready = connected && gm != null && !started;
         connectingPanel.SetActive(!ready);
