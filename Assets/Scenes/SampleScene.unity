@@ -2295,19 +2295,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &118833674
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 118833671}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f25beb75b65ab344fa39eb60efe934c3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::MotionSensor
-  beepInterval: 1
 --- !u!82 &118833675
 AudioSource:
   m_ObjectHideFlags: 0
@@ -7370,7 +7357,7 @@ MonoBehaviour:
   emfObject: {fileID: 1338406100294738830}
   motionSensorObject: {fileID: 191474616}
   crucifixObject: {fileID: 1891986816731514101}
-  motionSensorPrefab: {fileID: 0}
+  motionSensorPrefab: {fileID: 191474616}
   inventoryUI: {fileID: 214465360}
 --- !u!1 &335708988
 GameObject:
@@ -28820,9 +28807,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 3458283109532121944, guid: 4b59043ca9259b449b4129e84e5bba76, type: 3}
       insertIndex: -1
       addedObject: {fileID: 118833675}
-    - targetCorrespondingSourceObject: {fileID: 3458283109532121944, guid: 4b59043ca9259b449b4129e84e5bba76, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 118833674}
     - targetCorrespondingSourceObject: {fileID: 3458283109532121944, guid: 4b59043ca9259b449b4129e84e5bba76, type: 3}
       insertIndex: -1
       addedObject: {fileID: 118833673}
