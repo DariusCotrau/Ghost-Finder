@@ -4,8 +4,8 @@ using UnityEngine;
 public class SimpleGhostMovement : MonoBehaviour
 {
     [Header("Setari Miscare")]
-    public float speed = 2f;             // Viteza cu care se plimba
-    public float changeDirectionTime = 3f; // La cate secunde isi schimba directia
+    public float speed = 2f;             
+    public float changeDirectionTime = 2f; 
 
     private Rigidbody rb;
     private Vector3 movementDirection;
@@ -17,7 +17,7 @@ public class SimpleGhostMovement : MonoBehaviour
         rb = GetComponent<Rigidbody>();
 
         rb.isKinematic = false;
-        rb.useGravity = true; // O lăsăm cu gravitație ca să stea pe podea
+        rb.useGravity = true; 
         rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
 
         ChooseRandomDirection();

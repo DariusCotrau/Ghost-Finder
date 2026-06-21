@@ -1,5 +1,5 @@
 using UnityEngine;
-using UnityEngine.UI; // IMPORTANT: Adauga aceasta linie pentru a putea controla UI-ul!
+using UnityEngine.UI; 
 
 public class UVFlashlight : MonoBehaviour
 {
@@ -13,7 +13,7 @@ public class UVFlashlight : MonoBehaviour
     public float rechargeDuration = 25f;  
     
     [Header("Setari UI")]
-    public Slider batterySlider; // Trage Slider-ul din scena aici
+    public Slider batterySlider; 
 
     private float currentBattery;
     private bool isRecharging = false;
@@ -24,7 +24,7 @@ public class UVFlashlight : MonoBehaviour
     {
         currentBattery = maxBatteryDuration;
 
-        // Configuram slider-ul sa aiba valorile corecte automat
+        
         if (batterySlider != null)
         {
             batterySlider.maxValue = maxBatteryDuration;
@@ -97,7 +97,6 @@ void Update()
         {
             uvLightObject.SetActive(false);
         }
-        // Schimbat textul sa sune mai tehnic/realist pentru un dispozitiv de ghost hunting
         Debug.LogWarning("[AVERTIZARE] Baterie descarcata! Sistemul UV intra in mod de reincarcare (10s)...");
     }
 

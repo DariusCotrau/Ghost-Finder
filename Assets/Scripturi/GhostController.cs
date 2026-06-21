@@ -25,7 +25,7 @@ public class GhostController : MonoBehaviour
             SetAlpha(uniqueMaterials[i], 0f);
         }
 
-        // O facem complet invizibila la inceputul jocului
+        
         SetGhostVisibility(false); 
     }
 
@@ -36,7 +36,7 @@ public class GhostController : MonoBehaviour
             revealTimer = fadeDelay;
             isBeingLit = false; 
             
-            // Daca e luminata, ne asiguram ca renderers sunt pornite si crestem opacitatea
+            
             SetGhostVisibility(true);
             for (int i = 0; i < uniqueMaterials.Length; i++)
             {
@@ -50,7 +50,7 @@ public class GhostController : MonoBehaviour
                 revealTimer -= Time.deltaTime;
                 if (revealTimer <= 0)
                 {
-                    // Cand se termina timerul, setam alpha la 0 si ASCUNDEM de tot obiectul
+                    
                     for (int i = 0; i < uniqueMaterials.Length; i++)
                     {
                         SetAlpha(uniqueMaterials[i], 0f);

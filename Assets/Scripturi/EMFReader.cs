@@ -3,7 +3,7 @@ using UnityEngine;
 public class EMFReader : MonoBehaviour
 {
     [Header("Setari Raycast")]
-    public float maxDetectionRange = 10f; // S-a schimbat la 10 metri. Cele 5 zone vor fi de cate 2 metri fiecare!
+    public float maxDetectionRange = 10f; 
     public LayerMask ghostLayer;
 
     [Header("Cele 5 Sunete EMF (De la Trimmer)")]
@@ -68,12 +68,12 @@ public class EMFReader : MonoBehaviour
                 isDetectingGhost = true;
                 currentDistanceToGhost = hit.distance;
                 
-                // Matematica se ajusteaza singura la 10m:
+                
                 // Nivel 1: intre 8m si 10m
                 // Nivel 2: intre 6m si 8m
                 // Nivel 3: intre 4m si 6m
                 // Nivel 4: intre 2m si 4m
-                // Nivel 5: sub 2 metri (panica!)
+                // Nivel 5: sub 2 metri 
                 currentEMFLevel = Mathf.Clamp(Mathf.CeilToInt((1f - (currentDistanceToGhost / maxDetectionRange)) * 5f), 1, 5);
                 return;
             }
