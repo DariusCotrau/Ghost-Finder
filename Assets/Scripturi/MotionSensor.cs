@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 public class MotionSensor : MonoBehaviour
 {
@@ -8,7 +9,8 @@ public class MotionSensor : MonoBehaviour
     public float beepInterval = 1f; // O data la cate secunde sa bipaie cand e cineva aproape
     private float beepTimer;
 
-    private bool isObjectInside = false;
+    // Folosim o lista ca sa tinem minte exact cine e inauntru (Player, Ghost sau ambii)
+    private List<Collider> objectsInside = new List<Collider>();
 
     void Start()
     {
@@ -18,8 +20,8 @@ public class MotionSensor : MonoBehaviour
 
     void Update()
     {
-        // Daca este cineva in raza, senzorul va bipaia ritmic
-        if (isObjectInside)
+        // Daca lista nu e goala, inseamna ca e cineva in raza (Player-ul, Fantoma, sau amandoi!)
+        if (objectsInside.Count > 0)
         {
             beepTimer -= Time.deltaTime;
             if (beepTimer <= 0f)
@@ -33,42 +35,50 @@ public class MotionSensor : MonoBehaviour
     // Ruleaza automat cand un corp intra in sfera invizibila (Trigger)
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player")) 
+        if (other.CompareTag("Ghost") || other.CompareTag("Player")) 
         {
-            isObjectInside = true;
-            beepTimer = 0f; // Bipaie instant cand ai calcat in raza lui
-            Debug.Log("[SENZOR] Miscare detectata in zona!");
+            // Daca nu cumva l-am adaugat deja, il punem in lista
+            if (!objectsInside.Contains(other))
+            {
+                objectsInside.Add(other);
+                
+                // Daca e primul care intra, bipaie instant
+                if (objectsInside.Count == 1)
+                {
+                    beepTimer = 0f; 
+                }
+                
+                Debug.Log($"[SENZOR] Miscare detectata! Obiect in raza: {other.gameObject.name} (Total: {objectsInside.Count})");
+            }
         }
     }
 
     // Ruleaza automat cand corpul paraseste sfera invizibila
     private void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("Player"))
+        if (other.CompareTag("Ghost") || other.CompareTag("Player"))
         {
-            isObjectInside = false;
-            Debug.Log("[SENZOR] Zona este din nou sigura.");
-        }
-    }
-
-    // === COPIAZĂ DE AICI JOS PENTRU FISICĂ ===
-
-    // Ruleaza automat cand obiectul fizic loveste podeaua sau un perete dupa ce l-ai aruncat
-    private void OnCollisionEnter(Collision collision)
-    {
-        // Daca am lovit mediul (podea, pereti, mobila - adica NU player-ul)
-        if (!collision.gameObject.CompareTag("Player"))
-        {
-            Rigidbody rb = GetComponent<Rigidbody>();
-            if (rb != null)
+            if (objectsInside.Contains(other))
             {
-                rb.isKinematic = true; // Înghețăm senzorul pe loc ca sa nu treaca sub harta
-                Debug.Log("[SENZOR] S-a oprit pe sol si a activat masurile anti-cadere.");
+                objectsInside.Remove(other);
+                Debug.Log($"[SENZOR] A parasit zona: {other.gameObject.name} (Ramasi: {objectsInside.Count})");
             }
         }
     }
 
-    // =========================================
+    // === FISICA DROPPING ===
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (!collision.gameObject.CompareTag("Player") && !collision.gameObject.CompareTag("Ghost")) 
+        {
+            Rigidbody rb = GetComponent<Rigidbody>();
+            if (rb != null)
+            {
+                rb.isKinematic = true; 
+                Debug.Log("[SENZOR] S-a oprit pe sol si a activat masurile anti-cadere.");
+            }
+        }
+    }
 
     void PlayBeep()
     {
